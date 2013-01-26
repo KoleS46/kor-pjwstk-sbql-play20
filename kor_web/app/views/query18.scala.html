@@ -1,0 +1,12 @@
+@(message: String)(implicit dat: pl.wcislo.sbql4j.java.model.runtime.Struct)
+
+
+@lab3 {
+	<h3>@message</h3>
+	<h4>
+		Suma wieku profesorów: @dat.getValue(0)<br>
+		Suma wieku studentów: @dat.getValue(1)<br>
+		Średnia z pensum profesorów: @dat.getValue(2)<br>
+		Średnia z ocen studentów: @dat.getValue(3)<br>
+	</h4>
+}

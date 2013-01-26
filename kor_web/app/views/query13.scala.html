@@ -1,0 +1,17 @@
+@(message: String)(implicit dat: Collection[kor.model.Student])
+
+
+@lab3 {
+	<h3>@message</h3>
+	<h4>Najstarszy student</h4>
+	<h4>
+		@if(dat.isEmpty()) {
+			Nie ma
+		} else {
+			@for(d <- dat) {
+				@d.getFname() @d.getSname() @d.getAge() lat
+			} 
+		}
+	</h4>
+
+}

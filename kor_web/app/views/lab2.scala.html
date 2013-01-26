@@ -1,0 +1,15 @@
+@(right_content: Html)
+
+
+@main("KOR - s10091") {
+	<h2>
+	@right_content
+	</h2>
+} {
+	<li><a href="@routes.Lab2.query1()">Query1</a></li>
+	<li><a href="@routes.Lab2.query2("dr")">Query2</a></li>
+	<li><a href="@routes.Lab2.query3()">Query3</a></li>
+	<li><a href="@routes.Lab2.query4()">Query4</a></li>
+	<li><a href="@routes.Lab2.query5()">Query5</a></li>
+	<li><a href="@routes.Lab2.query6("")">Query6</a></li>
+}

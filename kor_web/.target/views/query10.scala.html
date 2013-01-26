@@ -1,0 +1,34 @@
+@(message: String)(implicit dat: Collection[pl.wcislo.sbql4j.java.model.runtime.Struct])
+
+
+@lab2 {
+	<h3>@message</h3>
+	<table class="table table-bordered table-hover table-condensed">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Imię</th>
+				<th>Nazwisko</th>
+				<th>Rok studiów</th>
+			</tr>
+		</thead>
+		<tbody>
+			@if(dat.isEmpty()) {
+				<tr>
+					<td colspan="3">Brak wyników dla zapytania.</td>
+				</tr>
+			} else {
+				<ul>
+				@for((d, i) <- dat.zipWithIndex) {
+					<tr>
+						<td>@(i+1)</td>
+						<td>@d.getValue(0)</td>
+						<td>@d.getValue(1)</td>
+						<td>@d.getValue(2)</td>
+					</tr>
+				} 
+				</ul>
+			}
+		</tbody>
+	</table>
+}

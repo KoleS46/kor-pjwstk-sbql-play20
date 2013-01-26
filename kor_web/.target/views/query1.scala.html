@@ -1,0 +1,55 @@
+@(message: String)(implicit dat: Collection[kor.model.Student])
+
+
+@lab1 {
+	<h3>@message</h3>
+	<div class="input-append">
+		<input class="span2" type="text" id="student-index" value=""/>
+		<button class="btn" type="button">Pokaż</button>
+	</div>
+	<script type="text/javascript">
+		$("button").click(function(){
+			window.location.href = "/lab1/query1/"+~~$("#student-index").val();
+		});
+		$("#student-index").keydown(function(e){
+			if(e.keyCode == 13){
+				e.preventDefault();
+				$("button").click();
+			}
+		});
+	</script>
+	<table class="table table-bordered table-hover table-condensed">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Imię</th>
+				<th>Nazwisko</th>
+				<th>Wiek</th>
+				<th>Średnia</th>
+				<th>Rok ropoczęcia</th>
+				<th>Numer indeksu</th>
+			</tr>
+		</thead>
+		<tbody>
+			@if(dat.isEmpty()) {
+				<tr>
+					<td colspan="7">Brak wyników dla zapytania.</td>
+				</tr>
+			} else {
+				<ul>
+				@for((d, i) <- dat.zipWithIndex) {
+					<tr>
+						<td>@(i+1)</td>
+						<td>@d.getSname()</td>
+						<td>@d.getFname()</td>
+						<td>@d.getAge()</td>
+						<td>@((d.getAverage()*100).intValue()/100.0)</td>
+						<td>@d.getYear()</td>
+						<td>@d.getIndexnum()</td>
+					</tr>
+				} 
+				</ul>
+			}
+		</tbody>
+	</table>
+}

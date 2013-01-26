@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="s10091_kor" default="create_run_jar">
+	<property name="SOURCE_DIR" value="src"/>
+	<property name="DEST_DIR" value="dist"/>
+
+	<property name="SBQL4J_LIB" value="sbql4j_0.95_xml.jar" />
+	<property name="DB4O_SBQL4J_LIB" value="db4o_sbql4j_20111011.jar" />
+		
+	<property name="CLASSPATH" value="bin;config;lib/${SBQL4J_LIB};lib/${DB4O_SBQL4J_LIB}"/>
+	
+	<target name="declare">
+		<taskdef name="sbql_pre" 
+			classname="pl.wcislo.sbql4j.java.preprocessor.ant.SBQL4JAntTask"
+			classpath="${CLASSPATH};">
+		</taskdef>
+		<taskdef name="gatherDb4oMetadata" 
+			classname="pl.wcislo.sbql4j.java.preprocessor.ant.GatherDb4oMetadataAntTask"
+			classpath="${CLASSPATH};">
+		</taskdef>
+	</target>
+	
+	<target name="prepare" depends="declare">
+		<delete dir="${DEST_DIR}"/>
+		<mkdir dir="${DEST_DIR}"/>
+	</target>
+	
+	<target name="SBQL4J_precompile" depends="prepare">
+		<sbql_pre
+			sourcedir="${SOURCE_DIR}"
+			destdir="${DEST_DIR}"
+			classpath="${CLASSPATH}"
+			codeGenType="NO_STACKS"
+			printExpressionTrace="false"
+			printQueryPretty="true"
+			optimiseDeadQueries="true"
+			optimiseIndependentQueries="true"
+			optimiseDb4oIndexes="true">
+		</sbql_pre>
+	</target>
+	<target name="create_run_jar" depends="SBQL4J_precompile">
+        <jar destfile="kor_web/lib/kor.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="kor.data.KorData"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="bin"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/db4o_sbql4j_20111011.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/sbql4j_0.95_xml.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/guava-14.0-rc1.jar"/>
+        </jar>
+    </target>
+</project>

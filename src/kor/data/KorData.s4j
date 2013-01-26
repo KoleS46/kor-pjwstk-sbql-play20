@@ -1,0 +1,180 @@
+package kor.data;
+
+import com.db4o.*;
+import kor.model.Class;
+import kor.model.Professor;
+import kor.model.Student;
+import pl.wcislo.sbql4j.java.model.runtime.*;
+import pl.wcislo.sbql4j.java.model.runtime.Struct;
+import java.util.*;
+
+public class KorData {
+
+	private ObjectContainer db;
+	private KorPrepareData data;
+	
+	public static void main(String[] args) {
+		new KorData();
+	}
+	
+	public KorData() {
+		getConnection();
+		prepareData();
+	}
+	
+	public ObjectContainer getConnection() {
+		if(db == null){
+			this.db = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), "korData.db");
+		}
+		return db;
+	}
+	
+	public KorPrepareData getData() {
+		if(data == null) {
+			data = new KorPrepareData();
+		}
+		return data;
+	}
+	
+    private void prepareData() {
+    	ObjectContainer con = getConnection();
+    	KorPrepareData data = getData();
+    	ObjectSet<Professor> emp = con.query(Professor.class);
+    	if(emp.isEmpty()) {
+    		for(Professor e : data.getProfessors()) {
+    			con.store(e);
+    		}
+    	}
+    	ObjectSet<Class> depts1 = con.query(Class.class);
+    	if(depts1.isEmpty()) {
+    		for(Class d : data.getClasses()) {
+    			con.store(d);
+    		}
+    	}
+    	ObjectSet<Student> depts = con.query(Student.class);
+    	if(depts.isEmpty()) {
+    		for(Student d : data.getStudents()) {
+    			con.store(d);
+    		}
+    	}
+    	con.commit();
+    }
+    
+    public void prepare() {
+    	prepareData();
+    }
+
+    public void shutDown() {
+    	getConnection().close();
+    }
+    
+    public Collection<Struct> query1(String name) {
+    	Collection<Struct> deptAvgSal = #{ db.( Class as c.((c.name, c.shortname) where c.shortname == name ))	};
+		return deptAvgSal;
+    }
+    
+    public Collection<Student> query2(Integer indexn) {
+    	Collection<Student> deptAvgSal = #{ db.( Student where indexnum > indexn )	};
+    	return deptAvgSal;
+    }
+    
+    public Collection<Struct> query3() {
+    	Collection<Struct> deptAvgSal = #{ db.( Professor.(fname, sname, title, address.street, address.city, address.zip) )	};
+		return deptAvgSal;
+    }
+    
+    public Collection<Struct> query4() {
+    	Collection<Struct> deptAvgSal = #{ db.( Student.(fname, sname, address.street, address.city, address.zip, promoter.fname , promoter.sname) )	};
+    	return deptAvgSal;
+    }
+    
+    public Collection<Struct> query5(String city) {
+    	Collection<Struct> deptAvgSal = #{ db.( Student as s.((s.fname, s.sname) where s.address.city == city ) )	};
+    	return deptAvgSal;
+    }
+    
+    public Collection<Struct> query6() {
+    	Collection<Struct> deptAvgSal = #{ db.( Student.(fname, sname, address.street, address.city, address.zip) group as studs )	};
+    	return deptAvgSal;
+    }
+    
+    public Collection<Struct> query7() {
+    	Collection<Struct> deptAvgSal = #{ db.( Student.(fname, sname) join Professor.(fname, sname) )	};
+		return deptAvgSal;
+    }
+    
+    public Collection<Struct> query8() {
+    	Collection<Struct> deptAvgSal = #{ db.( Student as s.((s.fname, s.sname, s.average) where s.average > 4.5 and s.average < 5 ) )	};
+    	return deptAvgSal;
+    }
+    
+    public Collection<Struct> query9(String tite) {
+    	Collection<Struct> deptAvgSal = #{ db.( (Professor as p where p.title == tite).(p.fname, p.sname, p.title) )	};
+    	return deptAvgSal;
+    }
+    
+    public Collection<Struct> query10() {
+    	Collection<Struct> deptAvgSal = #{ db.( (Professor as p where p.married != not true).(p.fname, p.sname, p.married) )	};
+    	return deptAvgSal;
+    }
+    
+    public Collection<Struct> query11() {
+    	Collection<Struct> deptAvgSal = #{ db.( Student as s.((s.fname, s.sname, s.year) where s.year != 1 ) )	};
+    	return deptAvgSal;
+    }
+    
+    public Collection<Struct> query12() {
+    	Collection<Struct> deptAvgSal = #{ db.( (Professor as p where p.pensum+p.age >= 100).(p.fname, p.sname, p.pensum, p.age, p.pensum+p.age) )	};
+		return deptAvgSal;
+    }
+    
+    public Collection<Struct> query13(String klass) {
+    	Collection<Struct> deptAvgSal = #{ db.( (Class as c where (c.shortname != klass)).(c.shortname, c.name) )	};
+    	return deptAvgSal;
+    }
+    
+    public Collection<Student> query14() {
+    	Collection<Student> deptAvgSal = #{ db.( (Student as s where s.age == max(Student.age)).(s) )	};
+    	return deptAvgSal;
+    }
+    
+    public Collection<Student> query15() {
+    	Collection<Student> deptAvgSal = #{ db.( (Student as s where s.age == min(Student.age)).(s) )	};
+    	return deptAvgSal;
+    }
+    
+    public Collection<Student> query16() {
+    	Collection<Student> deptAvgSal = #{ db.( (Student where age == min(Student.age)) union (Student where age == max(Student.age)) )	};
+    	return deptAvgSal;
+    }
+    
+    public Collection<Student> query17() {
+    	Collection<Student> deptAvgSal = #{ db.( (Student as s where s.classes.shortname in (Class.shortname)) )	};
+		return deptAvgSal;
+    }
+    
+    public Collection<Professor> query18() {
+    	Collection<Professor> deptAvgSal = #{ db.( (Professor as p).(p where p.age > avg(Professor.age)) )	};
+    	return deptAvgSal;
+    }
+    
+    public Struct query19() {
+    	Struct deptAvgSal = #{ db.( (sum(Professor.age), sum(Student.age), avg(Professor.pensum), avg(Student.average)) )	};
+    	return deptAvgSal;
+    }
+    
+    public Collection<Professor> query20() {
+    	Collection<Professor> deptAvgSal = #{ db.( (Professor as p order by p.address.city asc) )	};
+		return deptAvgSal;
+    }
+    
+    public Boolean query21() {
+    	Boolean deptAvgSal = #{ db.( all Professor married )	};
+    	return deptAvgSal;
+    }
+    
+    public Collection<Student> query22() {
+    	Collection<Student> deptAvgSal = #{ db.( Student as s where s.promoter.married == (not any Student married) )	};
+		return deptAvgSal;
+    }
+}

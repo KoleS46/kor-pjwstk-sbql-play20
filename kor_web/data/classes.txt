@@ -1,0 +1,12 @@
+Elementy modelowania matematycznego|EMM	
+Język angielski|ENG
+Seminarium I|SEM1
+Strojenie baz danych|STB
+Systemy zarządzania bazami danych|SZB
+Administrowanie bazami danych|ABD
+Seminarium II|SEM2
+Systemy zabezpieczania informacji|SZI
+Zaawansowane modelowanie i analiza systemów informatycznych|ZMA
+Seminarium III|SEM3
+Języki i środowiska programowania baz danych|JPS
+Konstrukcja obiektowych rozproszonych baz danych|KOR

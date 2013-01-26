@@ -1,0 +1,49 @@
+@(message: String)(implicit dat: Collection[pl.wcislo.sbql4j.java.model.runtime.Struct])
+
+
+@lab2 {
+	<h3>@message</h3>
+	<div class="input-append">
+	<input class="span2" type="text" id="title" value=""/>
+	<button class="btn" type="button">Pokaż</button>
+	</div>
+	<script type="text/javascript">
+		$("button").click(function(){
+			window.location.href = "@routes.Lab2.query2("")"+$("#title").val();
+		});
+		$("#title").keydown(function(e){
+			if(e.keyCode == 13){
+				e.preventDefault();
+				$("button").click();
+			}
+		});
+	</script>
+	<table class="table table-bordered table-hover table-condensed">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Imię</th>
+				<th>Nazwisko</th>
+				<th>Tytuł</th>
+			</tr>
+		</thead>
+		<tbody>
+			@if(dat.isEmpty()) {
+				<tr>
+					<td colspan="4">Brak wyników dla zapytania.</td>
+				</tr>
+			} else {
+				<ul>
+				@for((d, i) <- dat.zipWithIndex) {
+					<tr>
+						<td>@(i+1)</td>
+						<td>@d.getValue(0)</td>
+						<td>@d.getValue(1)</td>
+						<td>@d.getValue(2)</td>
+					</tr>
+				} 
+				</ul>
+			}
+		</tbody>
+	</table>
+}

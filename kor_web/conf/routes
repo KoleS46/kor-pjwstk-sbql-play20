@@ -1,0 +1,41 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                         	controllers.Application.index()
+GET     /lab1/                 		controllers.Lab1.index()
+#GET     /lab1/query1/               controllers.Lab1.query1
+GET     /lab1/query1/$indexnum<[0-9]+>      controllers.Lab1.query1(indexnum: java.lang.Integer)
+GET     /lab1/query2/               controllers.Lab1.query2()
+GET     /lab1/query3/               controllers.Lab1.query3()
+GET     /lab1/query4/               controllers.Lab1.query4(klass = "")
+GET     /lab1/query4/:klass         controllers.Lab1.query4(klass: String)
+GET     /lab1/query5/               controllers.Lab1.query5()
+GET     /lab1/query6/               controllers.Lab1.query6()
+
+GET     /lab2/                 		controllers.Lab2.index()
+GET     /lab2/query1/      			controllers.Lab2.query1()
+GET     /lab2/query2/          controllers.Lab2.query2(tite = "")
+GET     /lab2/query2/:tite          controllers.Lab2.query2(tite: String)
+GET     /lab2/query3/               controllers.Lab2.query3()
+GET     /lab2/query4/               controllers.Lab2.query4()
+GET     /lab2/query5/               controllers.Lab2.query5()
+GET     /lab2/query6/         controllers.Lab2.query6(klass = "")
+GET     /lab2/query6/:klass         controllers.Lab2.query6(klass: String)
+
+GET     /lab3/                 		controllers.Lab3.index()
+GET     /lab3/query1/      			controllers.Lab3.query1()
+GET     /lab3/query2/		        controllers.Lab3.query2()
+GET     /lab3/query3/               controllers.Lab3.query3()
+GET     /lab3/query4/               controllers.Lab3.query4()
+GET     /lab3/query5/               controllers.Lab3.query5()
+GET     /lab3/query6/        	 	controllers.Lab3.query6()
+
+GET     /lab4/                 		controllers.Lab4.index()
+GET     /lab4/query1/      			controllers.Lab4.query1()
+GET     /lab4/query2/		        controllers.Lab4.query2()
+GET     /lab4/query3/               controllers.Lab4.query3()
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)

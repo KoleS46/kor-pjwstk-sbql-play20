@@ -1,0 +1,36 @@
+@(message: String)(implicit dat: Collection[kor.model.Student])
+
+
+@lab4 {
+	<h3>@message</h3>
+	<table class="table table-bordered table-hover table-condensed">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Imię</th>
+				<th>Nazwisko</th>
+				<th>Zamężna/Żonaty</th>
+				<th>Promotor Zamężna/Żonaty</th>
+			</tr>
+		</thead>
+		<tbody>
+			@if(dat.isEmpty()) {
+				<tr>
+					<td colspan="4">Brak wyników dla zapytania.</td>
+				</tr>
+			} else {
+				<ul>
+				@for((d, i) <- dat.zipWithIndex) {
+					<tr>
+						<td>@(i+1)</td>
+						<td>@d.getFname()</td>
+						<td>@d.getSname()</td>
+						<td>@if(d.getMarried()){TAK}else{NIE}</td>
+						<td>@if(d.getPromoter().getMarried()){TAK}else{NIE}</td>
+					</tr>
+				} 
+				</ul>
+			}
+		</tbody>
+	</table>
+}
