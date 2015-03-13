@@ -1,0 +1,1 @@
+zaliczenie z kor w pjwstk 2012 bazy daych sbql
